@@ -1,9 +1,10 @@
-const net = require("net");
-const strftime = require("strftime");
+const http = require("http");
+const fs = require("fs");
 
-const formatDate = () => strftime('%F %R', new Date());
-const server = net.createServer(socket =>   
-        
-   socket.end(`${formatDate()}\n`)
- );  
-server.listen(process.argv[2]);  
+const file = process.argv[3];
+const port = process.argv[2];
+
+http.createServer((req, res) => {
+  res.writeHead(200, { 'content-type' : 'text/plain' });
+  fs.createReadStream(file).pipe(res);
+}).listen(port);
